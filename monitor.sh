@@ -1,33 +1,41 @@
 #!/bin/bash
 
-# Define os caminhos das pastas usando caminhos absolutos baseados no diretório atual
 BASE_DIR=$(pwd)
 INPUT_DIR="$BASE_DIR/data/input"
 PROCESSING_DIR="$BASE_DIR/data/processing"
+ARCHIVE_DIR="$BASE_DIR/data/archive"
+ERROR_DIR="$BASE_DIR/data/error"
 
 echo "===================================================="
 echo " Starting DocuWatch Kernel..."
 echo " Monitoring folder: $INPUT_DIR"
 echo "===================================================="
 
-# Loop infinito para vigiar a pasta a cada 5 segundos
 while true; do
-    # Verifica se existe algum arquivo .pdf na pasta de entrada
     if ls "$INPUT_DIR"/*.pdf >/dev/null 2>&1; then
         echo "[SHELL INFO] New PDF detected! Initiating triage..."
         
-        # Pega o primeiro PDF encontrado
         FILE=$(ls "$INPUT_DIR"/*.pdf | head -n 1)
         FILENAME=$(basename "$FILE")
         
-        echo "[SHELL INFO] Moving $FILENAME to processing queue..."
         mv "$FILE" "$PROCESSING_DIR/"
+        CURRENT_FILE="$PROCESSING_DIR/$FILENAME"
         
-        echo "[SHELL INFO] Calling Python engine..."
-        # Aqui o Shell chama o Python passando o caminho do arquivo como argumento
-        python3 "$BASE_DIR/extract_intelligence.py" "$PROCESSING_DIR/$FILENAME"
+        echo "[SHELL INFO] Invoking Python intelligence framework..."
+        # Runs python and captures its exit code directly
+        python3 "$BASE_DIR/extract_intelligence.py" "$CURRENT_FILE"
+        PYTHON_EXIT_CODE=$?
         
-        echo "----------------------------------------------------"
+        # 4. ERROR HANDLING VIA SHELL
+        if [ $PYTHON_EXIT_CODE -eq 0 ]; then
+            echo "[SHELL SUCCESS] Python processed file successfully. Archiving..."
+            mv "$CURRENT_FILE" "$ARCHIVE_DIR/"
+        else
+            echo "[SHELL WARNING] Python failed to process file. Moving to Error Quarantine..."
+            mv "$CURRENT_FILE" "$ERROR_DIR/"
+        fi
+        
+        echo "===================================================="
     fi
     sleep 5
 done
