@@ -22,6 +22,7 @@ The pipeline is decoupled into three specialized layers, where each technology h
                                                     │
                                                     ▼
 [ ARCHIVE / ERROR ] <──(Move File)────────── [ 3. BASH QUARANTINE ]
+```
 
 1. System Layer (Bash): Acts as a lightweight, continuous daemon monitoring the filesystem. It handles initial file triage, isolates files during processing, reads Python subprocess execution signals, and routes files to their final destinations.
 
@@ -81,7 +82,7 @@ Start the real-time folder monitoring:
 ```
 
 # 📈 Expected Production Log Output
-
+```
 ====================================================
  Starting DocuWatch Kernel...
  Monitoring folder: /home/user/DocuWatch/data/input
@@ -93,6 +94,7 @@ Start the real-time folder monitoring:
 [PYTHON INFO] Analysis complete. Status: ALERT_TRIGGERED. Alerts logged: 3
 [SHELL SUCCESS] Python processed file successfully. Archiving...
 ====================================================
+```
 
 # 🛠️ Technologies & Tools Used
 
