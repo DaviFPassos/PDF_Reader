@@ -1,0 +1,8 @@
+venv_pdf_reader/
+
+venv/
+venv_*/
+env/
+ENV/
+.venv/
+.env.local
