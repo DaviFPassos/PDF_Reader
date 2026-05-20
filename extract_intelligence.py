@@ -9,7 +9,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "data", "documents.db")
 
 def init_database():
-    """Creates the SQLite database and tables using raw SQL queries."""
+    # Creates the SQLite database and tables using raw SQL queries.
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
@@ -38,7 +38,7 @@ def init_database():
 
 # 2. Document Analysis Engine (NLP / Regex)
 def analyze_pdf(file_path, filename):
-    """Reads the PDF, scans for risk keywords, and saves results to the SQL DB."""
+    # Reads the PDF, scans for risk keywords, and saves results to the SQL DB.
     init_database()
     
     conn = sqlite3.connect(DB_PATH)
